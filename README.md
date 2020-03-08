@@ -37,6 +37,25 @@ $ docker container top nginx
 $ docker container inspect nginx
 # statistics of the container
 # docker container stats
+# runt the docker container in interective and command accepting mode
+$ docker run -i -t busybox
+# run container in detached state
+# check all the running docker
+$ docker ps
+# list all the containers including the one which are not runnig
+$ docker ps -a
+# docker detailed information
+$ docker info
+# detailed information of a container
+$ docker inspect <container id>
+# runnig tomcat on docker
+$ docker run -it  -p host_port:container_port
+# see the tomcat logs
+$ docker logs <container id>
+# Docker images
+Images are layers , the lowest one is base image, each image is independent and docker pulls these one by one.
+When conatiner is running there is anoter layer created called the writable container layer. when container gets off the writable
+container layer is also gone
 ```
 
 ## Docker network commands
