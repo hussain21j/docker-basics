@@ -56,6 +56,8 @@ $ docker logs <container id>
 Images are layers , the lowest one is base image, each image is independent and docker pulls these one by one.
 When conatiner is running there is anoter layer created called the writable container layer. when container gets off the writable
 container layer is also gone
+# go inside a running container
+$ docker exec -it <container id or name> bash
 ```
 
 ## Docker network commands
@@ -95,3 +97,64 @@ $ docker image history <image name>
 # detailed information of an image
 $ docker image inspect <iamge name>
 ```
+
+## Docker build 
+### Docker build using the commit 
+you can just made changes and commit those changes, now whenever you made up a continer of the image it will have the changes
+### Docekr build 
+its a more rubust solution prepare a file name Dockerfile
+for example 
+```sh
+FROM openjdk:8u242-jre
+ADD target/springboot-mysql-docker.jar springboot-mysql-docker.jar
+EXPOSE 8086
+ENTRYPOINT ["java", "-jar", "springboot-mysql-docker.jar"]
+```
+common commands 
+
+```sh
+# build image from a Dockerfile
+#format docker build -t <image name> <path to Dockerfile>
+```
+
+## Dockerise a spring boot + mysql database
+1. download the mysql database image https://hub.docker.com/_/mysql 
+2. you can use the command `docker pull mysql` it will pull the command
+3. bring up the mysql container with command for example
+`docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=test -e MYSQL_USER=sa -e MYSQL_PASSWORD=password -d mysql`
+4. configure database infromation in your spring boot application 
+5. Build the image of spring boot application (for example using docker build)
+6. bring up the spring boot app container (link with the database)
+`docker run -p 8086:8086 --name user-app --link mysql-db -d user-app`
+
+
+## Docker compose
+doker compose is a tool for defining and running multiple containers. we can run multiple containers from a single file called docker-compose.yml file. and then with a single command we can start all containers 
+first check if docker compose is installed using the command 
+`docker-composer --version` or `docker-composer version`
+sample docker-compose file for the spring boot and mysql application
+```sh
+version: '3'
+services:
+  user-app:
+    #since the application expects the db to be available at the start time, so if fails then restart
+    restart: on-failure
+    build: .
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mysql-db
+  mysql-db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: password
+```
+to bring up the containers in from the docker-compose.yml file go to the directory where it is present. and use command
+`docker-composer up`
+
+to bring down the containers and delete as well
+`docker-compose rm -f`
+
