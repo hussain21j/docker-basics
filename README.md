@@ -152,8 +152,26 @@ services:
       MYSQL_USER: sa
       MYSQL_PASSWORD: password
 ```
-to bring up the containers in from the docker-compose.yml file go to the directory where it is present. and use command
-`docker-composer up`
+common docker compose commands
+
+```sh
+# to bring up the containers in from the docker-compose.yml file go to the directory where it is present. and use command
+$ docker-composer up
+# check the status of containers managed by docker compose
+$ docker-compose ps
+# aggregated logs of containers managed by docker compose
+$ docker-compose logs
+# logs of a specific container
+$ docker-compose logs <container id or container name>
+# stop all the conatainers is docker compose
+$ docker-compose stop
+# stop and remove all the containers in the docker compose
+$ docker-compose rm -f
+# rebuild all the images
+$ docker-compose build
+```
+
+
 
 to bring down the containers and delete as well
 `docker-compose rm -f`
