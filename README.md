@@ -44,6 +44,8 @@ $ docker run -i -t busybox
 $ docker ps
 # list all the containers including the one which are not runnig
 $ docker ps -a
+# start a stopped container
+$ docker start <container id or container name>
 # docker detailed information
 $ docker info
 # detailed information of a container
